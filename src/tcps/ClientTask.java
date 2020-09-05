@@ -22,23 +22,19 @@ public class ClientTask implements Runnable {
             Scanner in;         // Scanner is the incoming stream (requests from a client)
             PrintWriter out;    // PrintWriter is the outcoming stream (the response of the server)
             in = new Scanner(clientSocket.getInputStream());
-            out = new PrintWriter(clientSocket.getOutputStream(),true);
             // Parameter true ensures automatic flushing of the output buffer
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
 
             // Server keeps listening for request and reading data from the Client,
             // until the Client sends "stop" requests
-            while(in.hasNextLine())
-            {
+            while (in.hasNextLine()) {
                 request = in.nextLine();
 
-                if(request.equals("stop"))
-                {
+                if (request.equals("stop")) {
                     out.println("Good bye, client!");
                     System.out.println("Log: " + request + " client!");
                     break;
-                }
-                else
-                {
+                } else {
                     // server responses
                     response = new StringBuilder(request).reverse().toString();
                     out.println(response);
@@ -46,12 +42,8 @@ public class ClientTask implements Runnable {
                     System.out.println("Log: " + response);
                 }
             }
-            try {
-                clientSocket.close();
-            } catch(IOException ex){
-                ex.printStackTrace();
-            }
-        } catch (IOException ioEx){
+            clientSocket.close();
+        } catch (IOException ioEx) {
             ioEx.printStackTrace();
         } finally {
             System.out.println("Connection closed by client: " + clientSocket.toString());
